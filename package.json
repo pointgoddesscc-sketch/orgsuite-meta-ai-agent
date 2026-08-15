@@ -1,0 +1,16 @@
+{
+  "name": "orgsuite-meta-ai-agent",
+  "version": "1.0.0",
+  "description": "OrgSuite Meta AI Agent — Powerful cross-platform WhatsApp + Vercel intelligent agent",
+  "main": "api/webhook.js",
+  "scripts": {
+    "dev": "vercel dev",
+    "deploy": "vercel --prod"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {},
+  "private": true,
+  "license": "Apache-2.0"
+}

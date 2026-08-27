@@ -1,0 +1,10 @@
+OrgSuite Live Grok — Make workplace blueprint
+Status: Ready to Configure, not live yet.
+No secrets in this file.
+
+Scenario name: OrgSuite Live Grok
+Trigger: Custom webhook OrgSuite-Grok-In (treat URL as secret)
+Module 2: xAI Chat Completion grok-4 / grok-3-latest
+Module 3: WhatsApp Cloud send to inbound sender
+
+Later tools only after first green execution: Linear, GitHub, Sheets habits, Vercel watch.

@@ -1,0 +1,63 @@
+{
+  "name": "OrgSuite Live Grok",
+  "status": "Ready to Configure",
+  "note": "This is an OrgSuite rebuild guide, not a proprietary Make export blob. Import by recreating modules in the Make UI after owner login.",
+  "trigger": {
+    "app": "gateway-webhook",
+    "module": "Custom webhook",
+    "name": "OrgSuite-Grok-In",
+    "expectedPayload": {
+      "source": "orgsuite",
+      "event": "make_ping",
+      "email": "pointgoddesscc@gmail.com",
+      "device": "github-actions",
+      "payload": {
+        "repo": "pointgoddesscc-sketch/orgsuite-meta-ai-agent",
+        "text": "string"
+      }
+    }
+  },
+  "flow": [
+    {
+      "step": 1,
+      "module": "Custom webhook",
+      "action": "Receive JSON"
+    },
+    {
+      "step": 2,
+      "module": "Tools > Set variable",
+      "action": "Copy webhook.text to reply draft",
+      "status": "Available without extra keys"
+    },
+    {
+      "step": 3,
+      "module": "HTTP > Make a request",
+      "action": "Optional POST back to https://orgsuite-meta-ai-agent.vercel.app/api/health",
+      "status": "Proposed",
+      "note": "Health endpoint is GET-only today; do not treat this as live write-back."
+    },
+    {
+      "step": 4,
+      "module": "xAI / HTTP to api.x.ai",
+      "status": "Requires Authorization",
+      "note": "Needs XAI_API_KEY in Make connections, not in GitHub."
+    },
+    {
+      "step": 5,
+      "module": "WhatsApp Business Cloud",
+      "status": "Requires Authorization",
+      "note": "Needs Meta tokens. Cannot be created from GitHub login."
+    },
+    {
+      "step": 6,
+      "module": "GitHub",
+      "status": "Ready to Configure after Make login",
+      "note": "Create connection in Make UI with a fine-grained PAT. Do not paste the PAT into this repo."
+    }
+  ],
+  "security": [
+    "Treat hook.make.com URLs as secrets",
+    "Prefer webhook API key header x-make-apikey",
+    "No tokens in GitHub files"
+  ]
+}

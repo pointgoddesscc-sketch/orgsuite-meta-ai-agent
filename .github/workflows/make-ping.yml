@@ -1,0 +1,35 @@
+name: OrgSuite Make ping
+
+on:
+  workflow_dispatch:
+    inputs:
+      text:
+        description: Ping payload text
+        required: false
+        default: github-actions-ping
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Require MAKE_WEBHOOK_URL secret
+        env:
+          MAKE_WEBHOOK_URL: ${{ secrets.MAKE_WEBHOOK_URL }}
+        run: |
+          if [ -z "$MAKE_WEBHOOK_URL" ]; then
+            echo "MAKE_WEBHOOK_URL secret is missing. Status: Requires Authorization."
+            echo "Store the Make custom webhook URL as a GitHub Actions secret. Do not commit it."
+            exit 1
+          fi
+
+      - name: POST ping to Make
+        env:
+          MAKE_WEBHOOK_URL: ${{ secrets.MAKE_WEBHOOK_URL }}
+          PING_TEXT: ${{ inputs.text }}
+        run: |
+          curl -fsS -X POST "$MAKE_WEBHOOK_URL" \
+            -H "Content-Type: application/json" \
+            -d "{\"source\":\"orgsuite\",\"event\":\"make_ping\",\"email\":\"pointgoddesscc@gmail.com\",\"device\":\"github-actions\",\"payload\":{\"repo\":\"pointgoddesscc-sketch/orgsuite-meta-ai-agent\",\"text\":\"${PING_TEXT}\"}}"
+          echo "Make ping HTTP success. Scenario run is only live if Make accepted the hook."

@@ -1,34 +1,27 @@
 # OrgSuite + Make.com
 
-Status labels used here: Connected · Completed · Available · Ready to Configure · Proposed · Requires Authorization.
+Status labels: Connected · Completed · Available · Ready to Configure · Proposed · Requires Authorization.
 
-## What GitHub login can and cannot do
+## Owner-provided Make identifiers (not a session)
 
-| Action | Status |
-|---|---|
-| GitHub identity `pointgoddesscc-sketch` | **Connected** |
-| Push Make blueprint + GitHub Action from this repo | **Completed** |
-| Log into [make.com](https://www.make.com/en/login) as the owner | **Requires Authorization** |
-| Use GitHub as Make.com website SSO | **Not available** on standard Make plans. Make SSO is Enterprise and lists Okta, Microsoft AD, Google — not GitHub. |
-| GitHub *module inside* a Make scenario | **Ready to Configure** after you are already logged into Make. That is a PAT/OAuth connection *in* the scenario, not a substitute for Make login. |
+| Field | Value | Status |
+|---|---|---|
+| Zone | `us2.make.com` | **Available** (from owner URL) |
+| Organization id | `8644501` | **Available** (from owner URL) |
+| Dashboard | https://us2.make.com/organization/8644501/ | **Requires Authorization** — unauthenticated GET returned 404 `Cannot GET /organization/8644501/` |
+| GitHub identity | `pointgoddesscc-sketch` | **Connected** |
+| Make website login via GitHub | — | **Not available** |
+| Make MCP from this Grok chat | https://mcp.make.com | **Requires Authorization** (HTTP 401) |
 
-Grok cannot complete Make.com login. There is no Make connector on this workspace. A GitHub session here does not open a Make session.
+GitHub OAuth here is not Make SSO. Official Make login shows **Continue with Google** and **Continue with SSO** only.
 
 ## Owner login (one time)
 
-1. Open https://www.make.com/en/login with `pointgoddesscc@gmail.com` (or the account you already use).
-2. Create organization / team for OrgSuite if needed.
-3. New scenario → Webhooks → Custom webhook → name `OrgSuite-Grok-In`.
-4. Copy the hook URL. Store it only as:
-   - Vercel env `MAKE_WEBHOOK_URL`
-   - GitHub Actions secret `MAKE_WEBHOOK_URL`
-   Never commit the URL.
-5. Import or rebuild the scenario from `make/orgsuite-live-grok-blueprint.json`.
-6. Optionally add a GitHub module *after* the first green webhook run.
+1. Open https://www.make.com/en/login
+2. Continue with Google as `pointgoddesscc@gmail.com`
+3. You should land in zone `us2` org `8644501`
+4. Create custom webhook `OrgSuite-Grok-In`
+5. Store the hook URL only as Vercel env + GitHub Actions secret `MAKE_WEBHOOK_URL`
+6. Turn the scenario ON and set scheduling to on-demand
 
-## After the secret exists
-
-GitHub Action: `.github/workflows/make-ping.yml`
-Manual run: Actions → OrgSuite Make ping → Run workflow.
-
-If the secret is missing the job fails on purpose and does not invent a successful Make run.
+Do not commit the hook URL.

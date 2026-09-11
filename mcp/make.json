@@ -1,0 +1,7 @@
+{
+  "name": "orgsuite-make",
+  "liveEndpoint": "https://harmony-ai-spotify-agent.vercel.app/api/make-event",
+  "officialMakeMcp": "https://mcp.make.com",
+  "tools": ["make.trigger", "make.status", "make.scenarios", "make.logs"],
+  "auth": "MAKE_HARMONY_WEBHOOK_URL in Vercel. Never commit secrets."
+}
